@@ -171,6 +171,4 @@ jobs:
   
           echo "${{ steps.build_paths.outputs.INSTALL }}\$folder_name\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-
-          
           

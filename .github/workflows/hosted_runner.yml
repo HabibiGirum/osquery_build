@@ -195,13 +195,12 @@ jobs:
           cmake -G "Visual Studio 16 2019" -A x64 ..
   
           # Build
-          cmake --build . --config RelWithDebInfo -j10
-      - name: Determine Current Directory
+          cmake --build . --config RelWithDebInfo -j4
+      - name: Create package_data directory and Install osquery
+        working-directory: ./osquery/build
         run: |
-          cd
-
-          # mkdir package_data
-          # $Env:DESTDIR = "C:\Project\osquery\build\package_data"
+          mkdir package_data
+          cmake --build . --target install --config Release
       # - name: Configure the project
       #   shell: cmd
       #   working-directory: ${{ steps.build_paths.outputs.BINARY }}

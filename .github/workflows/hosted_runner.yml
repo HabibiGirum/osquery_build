@@ -187,22 +187,22 @@ jobs:
       - name: Configure the project
         shell: cmd
         working-directory: ${{ steps.build_paths.outputs.BINARY }}
-      
+        
         env:
           SCCACHE_DIR: ${{ steps.build_paths.outputs.SCCACHE }}
           SCCACHE_CACHE_SIZE: "5G"
-      
+        
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
           @echo on
-      
+        
           set cross_compilation=
           if 64==arm64 (
               echo set (CMAKE_SYSTEM_NAME Windows^) > cross.cmake
               echo set (CMAKE_SYSTEM_PROCESSOR ARM64^) >> cross.cmake
               set cross_compilation=-DCMAKE_TOOLCHAIN_FILE=cross.cmake
           )
-      
+        
           cmake -G Ninja ^
             -DCMAKE_C_COMPILER="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30037/bin/Hostx64/x64/cl.exe" ^
             -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30037/bin/Hostx64/x64/cl.exe" ^

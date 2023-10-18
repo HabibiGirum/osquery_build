@@ -193,23 +193,23 @@ jobs:
           SCCACHE_CACHE_SIZE: "5G"
       
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ steps.vc_arch.outputs.VC_ARCH }}
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
           @echo on
       
           set cross_compilation=
-          if ${{ matrix.bitness }}==arm64 (
+          if 64==arm64 (
               echo set (CMAKE_SYSTEM_NAME Windows^) > cross.cmake
               echo set (CMAKE_SYSTEM_PROCESSOR ARM64^) >> cross.cmake
               set cross_compilation=-DCMAKE_TOOLCHAIN_FILE=cross.cmake
           )
       
           cmake -G Ninja ^
-            -DCMAKE_C_COMPILER=cl.exe ^
-            -DCMAKE_CXX_COMPILER=cl.exe ^
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ^
+            -DCMAKE_C_COMPILER="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30037/bin/Hostx64/x64/cl.exe" ^
+            -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30037/bin/Hostx64/x64/cl.exe" ^
+            -DCMAKE_BUILD_TYPE=Release ^
             -DOSQUERY_BUILD_TESTS=ON ^
             -DCMAKE_C_COMPILER_LAUNCHER="sccache.exe" ^
             -DCMAKE_CXX_COMPILER_LAUNCHER="sccache.exe" ^
-            -DPython3_ROOT_DIR=${{ steps.python_root_directory.outputs.VALUE }} ^
+            -DPython3_ROOT_DIR=C:\hostedtoolcache\windows\Python\3.11.5\x64 ^
             ${{ steps.build_paths.outputs.SOURCE }} ^
             %cross_compilation%

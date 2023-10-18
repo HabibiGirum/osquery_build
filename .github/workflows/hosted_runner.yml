@@ -196,6 +196,12 @@ jobs:
   
           # Build
           cmake --build . --config RelWithDebInfo -j10
+      - name: Determine Current Directory
+        run: |
+          cd
+
+          # mkdir package_data
+          # $Env:DESTDIR = "C:\Project\osquery\build\package_data"
       # - name: Configure the project
       #   shell: cmd
       #   working-directory: ${{ steps.build_paths.outputs.BINARY }}

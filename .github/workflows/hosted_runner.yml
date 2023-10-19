@@ -84,34 +84,34 @@ jobs:
   
       #     echo "VALUE=$osquery_version" >> $env:GITHUB_OUTPUT
   
-      - name: Clone the osquery-packaging repository
-        run: |
-          cd w
-          git clone ${{ env.PACKAGING_REPO }}
-          cd ${{ steps.build_paths.outputs.PACKAGING }}
-          git checkout ${{ env.PACKAGING_COMMIT }}
+      # - name: Clone the osquery-packaging repository
+      #   run: |
+      #     cd w
+      #     git clone ${{ env.PACKAGING_REPO }}
+      #     cd ${{ steps.build_paths.outputs.PACKAGING }}
+      #     git checkout ${{ env.PACKAGING_COMMIT }}
   
-      - name: Update the cache (git submodules)
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.build_paths.outputs.SOURCE }}\.git\modules
+      # - name: Update the cache (git submodules)
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ${{ steps.build_paths.outputs.SOURCE }}\.git\modules
   
-          key: |
-            gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}_${{ github.sha }}
+      #     key: |
+      #       gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}_${{ github.sha }}
   
-          restore-keys: |
-            gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}
+      #     restore-keys: |
+      #       gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}
   
-      - name: Update the cache (downloads)
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.build_paths.outputs.DOWNLOADS }}
+      # - name: Update the cache (downloads)
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ${{ steps.build_paths.outputs.DOWNLOADS }}
   
-          key: |
-            downloads_${{ matrix.os }}_${{ github.sha }}
+      #     key: |
+      #       downloads_${{ matrix.os }}_${{ github.sha }}
   
-          restore-keys: |
-            downloads_${{ matrix.os }}
+      #     restore-keys: |
+      #       downloads_${{ matrix.os }}
           
 
       - name: Initialize the Python 3 installation
@@ -199,7 +199,7 @@ jobs:
           cmake -G "Visual Studio 16 2019" -A x64 ..
   
           # Build
-          cmake --build . --config RelWithDebInfo -j4
-          mkdir package_data
-          cmake --build . --target install --config Release
+          cmake --build . --config RelWithDebInfo -j 3 --target install --config Release
+          # mkdir package_data
+          # cmake --build . --target install --config Release
           

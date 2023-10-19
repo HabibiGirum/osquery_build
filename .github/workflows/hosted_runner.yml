@@ -201,11 +201,11 @@ jobs:
           # Build
           # cmake --build . --config RelWithDebInfo -j 3 --target install --config Release
           mkdir package_data
-          cd package_data 
-          cmake --build .. --target install --config Release -j 3
+          
+          cmake --build . --target install --config Release -j 3
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: Build file
-          path: ./osquery/build/package_data
+          path: ./osquery/build
           

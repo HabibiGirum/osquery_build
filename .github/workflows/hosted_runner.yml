@@ -199,7 +199,7 @@ jobs:
           cmake -G "Visual Studio 16 2019" -A x64 ..
   
           # Build
-          cmake --build . --config RelWithDebInfo -j 3 --target install --config Release
-          # mkdir package_data
-          # cmake --build . --target install --config Release
+          # cmake --build . --config RelWithDebInfo -j 3 --target install --config Release
+          mkdir package_data
+          cmake --build . --target install --config Release -j 3
           

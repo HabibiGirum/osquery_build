@@ -196,6 +196,6 @@ jobs:
   
           # Build
           cmake --build . --config RelWithDebInfo -j4
-          # mkdir package_data
-          # cmake --build . --target install --config Release
+          mkdir package_data
+          cmake --build . --target install --config Release
           

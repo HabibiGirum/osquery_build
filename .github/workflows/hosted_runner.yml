@@ -189,6 +189,7 @@ jobs:
   
           echo "${{ steps.build_paths.outputs.INSTALL }}\ninja" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Download and build osquery source
+        shell: powershell
         run: |
           git clone https://github.com/osquery/osquery
           cd osquery
@@ -201,7 +202,7 @@ jobs:
           # Build
           # cmake --build . --config RelWithDebInfo -j 3 --target install --config Release
           mkdir package_data
-          
+          $Env:DESTDIR="./osquery/build/package_data"
           cmake --build . --target install --config Release -j 3
       - name: Upload artifact
         uses: actions/upload-artifact@v2

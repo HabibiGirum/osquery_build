@@ -11,7 +11,7 @@ env:
   PACKAGING_REPO: https://github.com/osquery/osquery-packaging
   PACKAGING_COMMIT: 4caa2c54f0d893c1efa47932571046bbce156c52
   SUBMODULER_CACHE_VERSION: 2
-
+  
 jobs:
   build_windows:
     runs-on: ${{ matrix.os }}
@@ -72,60 +72,12 @@ jobs:
         with:
           fetch-depth: 0
           path: ${{ steps.build_paths.outputs.REL_SOURCE }}
-
-          
-      # - name: Detect the osquery version
-      #   shell: powershell
-      #   id: osquery_version
-      #   run: |
-      #     cd ${{ steps.build_paths.outputs.SOURCE }}
-      #     $osquery_version=$(git describe --tags --abbrev=0)
-  
-      #     echo "VALUE=$osquery_version" >> $env:GITHUB_OUTPUT
-  
-      # - name: Clone the osquery-packaging repository
-      #   run: |
-      #     cd w
-      #     git clone ${{ env.PACKAGING_REPO }}
-      #     cd ${{ steps.build_paths.outputs.PACKAGING }}
-      #     git checkout ${{ env.PACKAGING_COMMIT }}
-  
-      # - name: Update the cache (git submodules)
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ${{ steps.build_paths.outputs.SOURCE }}\.git\modules
-  
-      #     key: |
-      #       gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}_${{ github.sha }}
-  
-      #     restore-keys: |
-      #       gitmodules_${{ matrix.os }}_${{env.SUBMODULE_CACHE_VERSION}}
-  
-      # - name: Update the cache (downloads)
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ${{ steps.build_paths.outputs.DOWNLOADS }}
-  
-      #     key: |
-      #       downloads_${{ matrix.os }}_${{ github.sha }}
-  
-      #     restore-keys: |
-      #       downloads_${{ matrix.os }}
-          
-
       - name: Initialize the Python 3 installation
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
           architecture: "x64"
-  
-      # The runners will likely have both the x86 and x64 versions of
-      # Python but we always need the 64-bit one regardless of which
-      # architecture we are building for.
-      #
-      # The setup-python action should have put the right Python version
-      # in the PATH variable for us, so locate the installation directory
-      # so we can use it as a hint when we configure the project with
+
       # CMake
       - name: Locate the Python root directory
         id: python_root_directory
@@ -208,5 +160,35 @@ jobs:
         with:
           name: Build file
           path: ./osquery/build/osquery/build/package_data/Program Files/osquery/osqueryd
-    
+  build:
+    runs-on: windows-latest
+    needs: build_windows
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Set path for candle and light
+      run: |
+        echo "C:\\Program Files (x86)\\WiX Toolset v3.11\\bin" >> $GITHUB_PATH
+      shell: powershell  # Change this to powershell
+
+    - name: Build WiX Project
+      run: |
+        candle.exe -ext "WixUIExtension.dll" msi.wxs
+        light.exe -ext "WixUIExtension.dll" -out Vistar.msi msi.wixobj
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Vistar
+        path: Vistar.msi
+
+
+
+
+
           

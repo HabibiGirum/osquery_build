@@ -186,6 +186,11 @@ jobs:
       with:
         name: Vistar
         path: Vistar.msi
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build file
+        path: ./osquery/build/osquery/build/package_data/Program Files/osquery/osqueryd
 
 
 

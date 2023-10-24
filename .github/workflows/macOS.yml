@@ -133,15 +133,15 @@ jobs:
   
           echo "PYTHON_ROOT=${python_root}" >> $GITHUB_OUTPUT
       
-      - name: Clone the osquery repository
-        working-directory: ${{ steps.build_paths.outputs.REL_SOURCE }}
-        run:
-          git clone https://github.com/osquery/osquery.git
+      # - name: Clone the osquery repository
+      #   working-directory: ${{ steps.build_paths.outputs.REL_SOURCE }}
+      #   run:
+      #     git clone https://github.com/osquery/osquery.git
           
       - name: Install CMake
         shell: bash
         run: |
-          ${{ steps.build_paths.outputs.REL_SOURCE }}/osquery/tools/ci/scripts/macos/install_cmake.sh \
+          ${{ steps.build_paths.outputs.REL_SOURCE }}/tools/ci/scripts/macos/install_cmake.sh \
             "${{ steps.build_paths.outputs.DOWNLOADS }}" \
             "${{ steps.build_paths.outputs.INSTALL }}" \
             "3.21.4"
